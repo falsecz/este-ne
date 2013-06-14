@@ -1,6 +1,9 @@
 ###*
   @fileoverview App start.
+
+  @LESS mrdka
 ###
+
 
 goog.provide 'app.start'
 

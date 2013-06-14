@@ -5,6 +5,11 @@ module.exports = (grunt) ->
     'client/app/css/**/*.styl'
   ]
 
+  lessStyles = [
+    'bower_components/este-library/este/**/*.less'
+    'client/app/**/*.less'
+  ]
+
   coffeeScripts = [
     'bower_components/este-library/este/**/*.coffee'
     'client/app/js/**/*.coffee'
@@ -60,6 +65,23 @@ module.exports = (grunt) ->
           src: 'client/app/css/app.styl'
           ext: '.css'
         ]
+
+    lesssprites:
+      # options:
+      #   'include css': true
+      #   'compress': false
+      all:
+        files: [
+          expand: true
+          src: lessStyles
+          ext: '.css'
+        ]
+      # app:
+      #   files: [
+      #     expand: true
+      #     src: 'client/app/css/app.styl'
+      #     ext: '.css'
+      #   ]
 
     coffee:
       options:
@@ -193,6 +215,7 @@ module.exports = (grunt) ->
           'bower_components/closure-library/**/'
           'bower_components/este-library/este/**/'
           'client/**/{js,css}/**/'
+          'client/**/'
           'server/**/'
         ]
 
@@ -213,10 +236,17 @@ module.exports = (grunt) ->
       js: (filepath) ->
         grunt.config ['esteDeps', 'all', 'src'], filepath
         grunt.config ['esteUnitTests', 'app', 'src'], filepath
-        tasks = ['esteDeps:all', 'esteUnitTests:app']
+        tasks = ['esteDeps:all', 'esteUnitTests:app', 'lesssprites']
         if grunt.option 'stage'
           tasks.push 'esteBuilder:app'
         tasks
+      less: (filepath) ->
+        grunt.config ['lesssprites'], [
+           expand: true
+           src: filepath
+           ext: '.css'
+        ]
+        ['lesssprites']
 
       styl: (filepath) ->
         grunt.config ['stylus', 'all', 'files'], [
@@ -260,9 +290,13 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-stylus'
   grunt.loadNpmTasks 'grunt-env'
   grunt.loadNpmTasks 'grunt-este'
+  grunt.loadNpmTasks 'grunt-este-less-sprites'
+  grunt.loadNpmTasks 'grunt-grinder'
   grunt.loadNpmTasks 'grunt-este-watch'
   grunt.loadNpmTasks 'grunt-release'
   grunt.loadNpmTasks 'grunt-text-replace'
+
+  # require 'grunt-grinder'
 
   grunt.registerTask 'build', 'Build app.', (app = 'app') ->
     tasks = [
@@ -273,6 +307,7 @@ module.exports = (grunt) ->
       "coffeelint"
       "esteTemplates:#{app}"
       "esteDeps"
+      "lesssprites"
       "esteUnitTests:#{app}"
     ]
     if grunt.option 'stage'
