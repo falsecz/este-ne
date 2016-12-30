@@ -10,7 +10,7 @@ Este is robust, modular and comfortable dev stack and library for web apps devel
   - [Este library](https://github.com/Steida/este-library)
     - Este MVC [framework](https://github.com/Steida/este-library/tree/master/app)
     - mobile support (tap and swipe events, touch enabled drag, hide address bar, local storage, and more)
-  - TDD ready, unit testing via [Mocha](http://visionmedia.github.io/mocha)
+  - TDD ready, unit testing via [Mocha](http://mochajs.org/)
   - [Stylus](http://learnboost.github.io/stylus) styles
   - Node.js [Express](http://expressjs.com) app boilerplate
   - powerful internalization and localization
